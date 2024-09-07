@@ -22,8 +22,23 @@ window.addEventListener('scroll', function() {
     });
 });
 
-// Booking Form Submit (this is a simulation, actual email functionality requires a backend)
 document.getElementById("bookingForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    document.getElementById("bookingResult").textContent = "Your consultation request has been sent!";
+    event.preventDefault(); // Prevent default form submission
+
+    // Collect form data
+    const templateParams = {
+        user_name: document.getElementById("name").value,
+        user_email: document.getElementById("email").value,
+        user_message: document.getElementById("message").value,
+    };
+
+    // Send email via EmailJS
+    emailjs.send('service_pk3yjn7', 'template_p200rn9', templateParams)
+        .then(function(response) {
+            console.log('SUCCESS!', response.status, response.text);
+            document.getElementById("bookingResult").textContent = "Your consultation request has been sent!";
+        }, function(error) {
+            console.log('FAILED...', error);
+            document.getElementById("bookingResult").textContent = "An error occurred, please try again.";
+        });
 });
